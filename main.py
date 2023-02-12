@@ -1,13 +1,25 @@
 from tkinter import *
+from tkinter import messagebox as mbox
 import random
+import pyperclip
 
 # ---------------------------   SAVE PASSWORD --------------------------------
 def save():
-    with open("data.txt", "a") as file:
-        file.write(website_input.get()+" | "+email_input.get()+" | "+password_input.get()+"\n")
-    website_input.delete(0, END)
-    email_input.delete(0, END)
-    password_input.delete(0, END)
+    website_data = website_input.get()
+    email_data = email_input.get()
+    password_data = password_input.get()
+
+    if website_data == "" or email_data == "" or password_data == "":
+        mbox.showerror(title="Error", message="Do not left empty!!!")
+    else:
+        is_ok = mbox.askokcancel(title="Check", message="Is it ok? Or do you want to change it?")
+        if is_ok:
+            with open("data.txt", "a") as file:
+                file.write(website_data + " | " + email_data + " | " + password_data + "\n")
+            website_input.delete(0, END)
+            email_input.delete(0, END)
+            password_input.delete(0, END)
+
 
 
 # ---------------------------   PASSWORD GENERATOR  --------------------------
@@ -38,6 +50,7 @@ shuffled = ''
 for x in arr:
     shuffled += x
 def generate_password():
+    pyperclip.copy(shuffled)
     password_input.insert(0, shuffled)
 
 # ---------------------------   UI SETUP  ------------------------------------
